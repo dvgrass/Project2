@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, func
 from flask import Flask, jsonify
 
 # Database setup 
-engine = create_engine('postgresql://user:password@localhost/vegetation_data')
+engine = create_engine('postgresql://user:password@localhost/servername')
 
 
 # reflect an existing database into a new model
@@ -17,24 +17,37 @@ Base = automap_base()
 Base.prepare(engine, reflect=True)
 
 # Save reference to the table
-Vegetation = Base.classes.vegetation
+Vegetation = Base.classes.vegetation_actualnameoftableindatabase
+Map2 = Base.classes.david_actualnameoftableindatabase
+Map3 = Base.classes.dallas_actualnameoftableindatabase
 
 # Flask Setup
 app = Flask(__name__)
 
 
-# Flask Routes
+#### Flask Routes ####
 
+# Landing Page route 
 @app.route("/")
-def welcome():
-    """List all available api routes."""
-    return (
-        f"Available Routes:<br/>"
-        f"vegetation_data"
-    )
+def index():
+    return render_template("index.html")
 
-@app.route("/vegetation_2011")
-def names():
+# David route 
+@app.route("/")
+def david():
+    return render_template("david.html")
+
+
+# Dallas route 
+@app.route("/")
+def dallas():
+    return render_template("dallas.html")
+
+# Kerrie route 
+@app.route("/")
+def veggie():
+    return render_template("veggie.html")
+
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -48,30 +61,3 @@ def names():
     vegetation = list(np.ravel(results))
 
     return jsonify(vegetation)
-
-
-@app.route("/api/v1.0/passengers")
-def passengers():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
-    results = session.query(Passenger.name, Passenger.age, Passenger.sex).all()
-
-    session.close()
-
-    # Create a dictionary from the row data and append to a list of all_passengers
-    all_passengers = []
-    for name, age, sex in results:
-        passenger_dict = {}
-        passenger_dict["name"] = name
-        passenger_dict["age"] = age
-        passenger_dict["sex"] = sex
-        all_passengers.append(passenger_dict)
-
-    return jsonify(all_passengers)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

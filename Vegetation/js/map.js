@@ -1,6 +1,6 @@
 var myMap = L.map("map", {
-    center: [37.7749, -122.4194],
-    zoom: 13
+    center: [39.7392, 104.9903],
+    zoom: 2
   });
   
   L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -10,7 +10,7 @@ var myMap = L.map("map", {
     accessToken: API_KEY
   }).addTo(myMap);
   
-  var url = "https://data.sfgov.org/resource/cuks-n6tp.json?$limit=10000";
+  var url = "insert json data link here";
   
   d3.json(url, function(response) {
   
@@ -26,10 +26,10 @@ var myMap = L.map("map", {
       }
     }
   
-    var heat = L.heatLayer(heatArray, {
-      radius: 20,
-      blur: 35
-    }).addTo(myMap);
+    // var heat = L.heatLayer(heatArray, {
+    //   radius: 20,
+    //   blur: 35
+   //  }).addTo(myMap);
   
   });
   
